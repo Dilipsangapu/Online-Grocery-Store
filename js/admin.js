@@ -298,7 +298,11 @@ class AdminDashboard {
         </div>
       </div>
       <div><h4 class="text-xs font-bold uppercase tracking-wider mb-2">Items</h4>
-        <div class="space-y-2 max-h-48 overflow-y-auto">${o.items.map(i=>`<div class="flex items-center justify-between p-2 bg-slate-50 rounded-xl text-xs"><div class="flex items-center gap-2"><img src="${i.image}" class="w-8 h-8 rounded-md object-cover"><div><h5 class="font-bold">${i.name}</h5><span class="text-[10px] text-slate-500">${i.unit} × ${i.quantity}</span></div></div><span class="font-bold">₹${i.price*i.quantity}</span></div>`).join("")}</div>
+        <div class="space-y-2 max-h-48 overflow-y-auto">${o.items.map(i=>{
+          const prod = window.freshCartAPI.getProductById(i.productId);
+          const img = (prod && prod.image) ? prod.image : i.image;
+          return `<div class="flex items-center justify-between p-2 bg-slate-50 rounded-xl text-xs"><div class="flex items-center gap-2"><img src="${img}" class="w-8 h-8 rounded-md object-cover"><div><h5 class="font-bold">${i.name}</h5><span class="text-[10px] text-slate-500">${i.unit} × ${i.quantity}</span></div></div><span class="font-bold">₹${i.price*i.quantity}</span></div>`;
+        }).join("")}</div>
       </div>
     </div>`;
     modal.classList.remove("hidden");

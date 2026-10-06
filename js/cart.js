@@ -38,7 +38,12 @@ class CartManager {
     this.appliedCoupon = null;
   }
 
-  getCart() { return this.cart; }
+  getCart() {
+    return this.cart.map(item => {
+      const p = window.freshCartAPI.getProductById(item.productId);
+      return p ? { ...item, image: p.image, name: p.name, price: p.price, originalPrice: p.originalPrice, unit: p.unit } : item;
+    });
+  }
 
   addItem(productId, quantity = 1) {
     const product = window.freshCartAPI.getProductById(productId);

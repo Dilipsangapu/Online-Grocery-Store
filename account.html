@@ -168,7 +168,13 @@ function renderOrders() {
         <span class="px-2.5 py-1 text-[10px] font-bold rounded-md ${statusColors[o.orderStatus]||'bg-slate-100 text-slate-600'}">${o.orderStatus}</span>
       </div>
       <div class="flex gap-2 overflow-x-auto pb-2">
-        ${o.items.map(i=>`<img src="${i.image}" alt="${i.name}" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 border border-slate-100">`).join('')}
+        ${o.items.map(i => {
+          const prod = window.freshCartAPI.getProductById(i.productId);
+          const img = (prod && prod.image) ? prod.image : i.image;
+          return `<a href="product.html?id=${i.productId||''}" title="${i.name}" class="group/thumb block flex-shrink-0">
+            <img src="${img}" alt="${i.name}" class="w-14 h-14 rounded-xl object-cover flex-shrink-0 border border-slate-200 group-hover/thumb:border-emerald-500 transition-colors shadow-xs">
+          </a>`;
+        }).join('')}
       </div>
       <div class="flex items-center justify-between mt-3 pt-3 border-t border-slate-100">
         <span class="text-sm font-extrabold text-emerald-700">₹${o.total}</span>

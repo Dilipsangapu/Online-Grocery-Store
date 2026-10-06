@@ -13,7 +13,7 @@ class FreshCartAPI {
   constructor() { this._init(); }
 
   _init() {
-    const DATA_VERSION = "2.4";
+    const DATA_VERSION = "2.5";
     if (localStorage.getItem("fc_data_version") !== DATA_VERSION) {
       // Merge/update default product images & info
       const existing = this._get(STORAGE_KEYS.PRODUCTS, null);
@@ -26,6 +26,22 @@ class FreshCartAPI {
       } else {
         localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(INITIAL_PRODUCTS));
       }
+
+      // Merge/update orders item images & details
+      const existingOrders = this._get(STORAGE_KEYS.ORDERS, null);
+      if (existingOrders && Array.isArray(existingOrders)) {
+        const updatedOrders = existingOrders.map(o => {
+          const updatedItems = (o.items || []).map(item => {
+            const freshProd = INITIAL_PRODUCTS.find(p => p.id === item.productId);
+            return freshProd ? { ...item, image: freshProd.image, name: freshProd.name } : item;
+          });
+          return { ...o, items: updatedItems };
+        });
+        localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(updatedOrders));
+      } else {
+        localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(INITIAL_ORDERS));
+      }
+
       localStorage.setItem("fc_data_version", DATA_VERSION);
     }
     const seed = (key, data) => { if (!localStorage.getItem(key)) localStorage.setItem(key, JSON.stringify(data)); };
