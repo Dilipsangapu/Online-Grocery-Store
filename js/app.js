@@ -43,7 +43,7 @@ class FreshCartApp {
     const grid = document.getElementById("deals-grid"); if (!grid) return;
     const deals = [
       { title:"Fresh Harvest Deals", discount:"UP TO 30% OFF", desc:"Crisp organic apples, Devgad Alphonso & farm greens", tag:"FRUITS & VEGGIES", image:"https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=400&q=80", cat:"fruits" },
-      { title:"Pure Vedic Essentials", discount:"BUY 1 GET 1 AT 50%", desc:"A2 Gir cow ghee, cold-pressed oils & Kashmiri kesar", tag:"COOKING STAPLES", image:"https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=400&q=80", cat:"cooking-essentials" },
+      { title:"Pure Vedic Essentials", discount:"BUY 1 GET 1 AT 50%", desc:"A2 Gir cow ghee, cold-pressed oils & Kashmiri kesar", tag:"COOKING STAPLES", image:"https://crm.swadeshivip.com/storage/images/uploads/image_20241112_150359.png", cat:"cooking-essentials" },
       { title:"Artisan Bakery Basket", discount:"FLAT 20% OFF", desc:"Sourdough loaves, flaky butter croissants & cookies", tag:"FRESH BAKERY", image:"https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=400&q=80", cat:"bakery" }
     ];
     grid.innerHTML = deals.map(d => `
