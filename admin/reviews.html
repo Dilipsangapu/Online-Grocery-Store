@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reviews — FreshCart Admin</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{emerald:{50:'#ecfdf5',100:'#d1fae5',500:'#10b981',600:'#059669',700:'#047857',800:'#065f46',900:'#064e3b'}},fontFamily:{sans:['Plus Jakarta Sans','Inter','sans-serif']}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-100 font-sans">
+<div id="toast-container"></div>
+<div class="flex h-screen overflow-hidden">
+  <!-- SIDEBAR -->
+  <aside class="w-64 flex-shrink-0 bg-slate-900 flex flex-col h-full overflow-y-auto">
+    <div class="p-5 border-b border-slate-800 flex items-center gap-3">
+      <img src="../assets/images/logo.png" alt="FreshCart Admin" class="h-11 w-auto max-h-11 object-contain bg-white/10 p-1.5 rounded-xl">
+      <div>
+        <div class="text-lg font-black text-white leading-none">Fresh<span class="text-emerald-400">Cart</span></div>
+        <div class="text-[10px] text-slate-400 font-medium mt-1">Admin Control Panel</div>
+      </div>
+    </div>
+    <nav class="flex-1 p-3 space-y-0.5">
+      <a href="dashboard.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800"><i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard</a>
+      <a href="products.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800"><i data-lucide="package" class="w-4 h-4"></i> Products</a>
+      <a href="categories.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800"><i data-lucide="grid-3x3" class="w-4 h-4"></i> Categories</a>
+      <a href="orders.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800"><i data-lucide="shopping-cart" class="w-4 h-4"></i> Orders</a>
+      <a href="customers.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800"><i data-lucide="users" class="w-4 h-4"></i> Customers</a>
+      <a href="inventory.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800"><i data-lucide="warehouse" class="w-4 h-4"></i> Inventory</a>
+      <a href="coupons.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800"><i data-lucide="ticket" class="w-4 h-4"></i> Coupons</a>
+      <a href="reviews.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold bg-emerald-700 text-white"><i data-lucide="star" class="w-4 h-4"></i> Reviews</a>
+      <a href="payments.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800"><i data-lucide="credit-card" class="w-4 h-4"></i> Payments</a>
+      <a href="delivery.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800"><i data-lucide="truck" class="w-4 h-4"></i> Delivery</a>
+      <a href="reports.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800"><i data-lucide="bar-chart-2" class="w-4 h-4"></i> Reports</a>
+      <a href="settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800"><i data-lucide="settings" class="w-4 h-4"></i> Settings</a>
+    </nav>
+    <div class="p-3 border-t border-slate-800"><button onclick="doLogout()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-red-900/40 hover:text-red-400"><i data-lucide="log-out" class="w-4 h-4"></i> Logout</button></div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="flex-1 flex flex-col h-full overflow-hidden">
+    <header class="bg-white border-b border-slate-200 px-6 py-3.5 flex items-center justify-between flex-shrink-0">
+      <div><h1 class="text-base font-extrabold text-slate-900">Product Reviews & Ratings</h1><p class="text-xs text-slate-400">Moderate customer feedback and sentiment</p></div>
+    </header>
+    <main class="flex-1 overflow-y-auto p-6">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-x-auto">
+        <table class="w-full">
+          <thead class="bg-slate-50">
+            <tr class="text-left text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+              <th class="py-3 px-4">Customer</th>
+              <th class="py-3 px-4">Product</th>
+              <th class="py-3 px-4">Rating</th>
+              <th class="py-3 px-4">Review Content</th>
+              <th class="py-3 px-4">Date</th>
+              <th class="py-3 px-4">Status</th>
+            </tr>
+          </thead>
+          <tbody id="admin-reviews-tbody"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="../js/data.js"></script><script src="../js/api.js"></script><script src="../js/cart.js"></script><script src="../js/admin.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  lucide.createIcons();
+  if (!window.freshCartAPI.isAdminAuthenticated()) { window.location.href = 'login.html'; return; }
+  window.adminDash.init();
+  window.adminDash.renderReviews();
+});
+function doLogout(){ window.freshCartAPI.logoutAdmin(); showToast('Logged out.','info'); setTimeout(()=>window.location.href='login.html',600); }
+</script>
+</body></html>

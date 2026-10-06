@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details — FreshCart</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { emerald: { 50:'#ecfdf5',100:'#d1fae5',200:'#a7f3d0',300:'#6ee7b7',400:'#34d399',500:'#10b981',600:'#059669',700:'#047857',800:'#065f46',900:'#064e3b' } }, fontFamily: { sans: ['Plus Jakarta Sans','Inter','system-ui','sans-serif'] } } }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+<body class="bg-slate-50 font-sans">
+<div id="toast-container"></div>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="bg-emerald-800 text-white py-2 px-4 text-center text-xs font-semibold">
+  <span class="flex items-center justify-center gap-6"><i data-lucide="truck" class="w-3.5 h-3.5"></i> Free delivery on orders above ₹499 &nbsp;|&nbsp; Same-day delivery available</span>
+</div>
+
+<!-- NAVBAR -->
+<nav class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center h-20 gap-4">
+    <a href="index.html" class="flex-shrink-0 flex items-center gap-3 group">
+      <img src="assets/images/logo.png" alt="FreshCart Logo" class="h-12 sm:h-14 w-auto object-contain group-hover:scale-105 transition-transform duration-200">
+      <div class="flex flex-col leading-none">
+        <span class="text-xl sm:text-2xl font-black text-emerald-700 tracking-tight">Fresh<span class="text-slate-900">Cart</span></span>
+        <span class="text-[11px] text-slate-500 font-semibold tracking-tight mt-0.5">Fresh groceries, delivered.</span>
+      </div>
+    </a>
+    <div class="flex-1 max-w-2xl hidden sm:block">
+      <div class="relative">
+        <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+        <input type="text" placeholder="Search products…" class="w-full pl-10 pr-4 py-2.5 text-sm border border-slate-200 rounded-xl bg-slate-50 focus:outline-none focus:border-emerald-400" onclick="window.location.href='shop.html'" readonly>
+      </div>
+    </div>
+    <div class="ml-auto flex items-center gap-2">
+      <a href="shop.html" class="px-3 py-2 text-xs font-semibold text-slate-600 hover:text-emerald-700 rounded-xl hover:bg-slate-50">Shop</a>
+      <a href="account.html" class="p-2 text-slate-600 hover:text-emerald-700 rounded-xl hover:bg-slate-50"><i data-lucide="user" class="w-5 h-5"></i></a>
+      <a href="cart.html" class="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-colors relative">
+        <i data-lucide="shopping-basket" class="w-4 h-4"></i> Cart
+        <span class="cart-count-badge ml-1 bg-white text-emerald-700 w-5 h-5 rounded-full flex items-center justify-center font-extrabold text-[10px] hidden">0</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+  <nav class="flex items-center gap-2 text-xs text-slate-400">
+    <a href="index.html" class="hover:text-emerald-600 font-medium">Home</a>
+    <i data-lucide="chevron-right" class="w-3 h-3"></i>
+    <a href="shop.html" class="hover:text-emerald-600 font-medium">Shop</a>
+    <i data-lucide="chevron-right" class="w-3 h-3"></i>
+    <span id="breadcrumb-product-name" class="text-slate-700 font-semibold truncate max-w-xs">Product Details</span>
+  </nav>
+</div>
+
+<!-- PRODUCT DETAILS CONTAINER -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 pb-16">
+  <div id="product-detail-view" class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden p-6 md:p-8">
+    <!-- Populated by JS -->
+    <div class="text-center py-16">
+      <div class="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+      <p class="text-sm text-slate-500">Loading product information...</p>
+    </div>
+  </div>
+
+  <!-- RELATED PRODUCTS -->
+  <div class="mt-12">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-xl font-black text-slate-900">Similar Fresh Picks</h2>
+      <a href="shop.html" class="text-xs font-bold text-emerald-700 hover:underline flex items-center gap-1">View All <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>
+    </div>
+    <div id="related-products-grid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4"></div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-slate-900 text-slate-400 py-10 px-4 mt-12 text-center text-xs">
+  <div class="flex items-center justify-center gap-3 mb-3">
+    <img src="assets/images/logo.png" alt="FreshCart Logo" class="h-10 w-auto object-contain bg-white/10 p-1.5 rounded-xl">
+    <span class="text-xl font-black text-white">Fresh<span class="text-emerald-400">Cart</span></span>
+  </div>
+  <p>© 2026 FreshCart. All rights reserved.</p>
+  <div class="flex justify-center gap-4 mt-2">
+    <a href="index.html" class="hover:text-emerald-400">Home</a>
+    <a href="shop.html" class="hover:text-emerald-400">Shop</a>
+    <a href="about.html" class="hover:text-emerald-400">About</a>
+    <a href="contact.html" class="hover:text-emerald-400">Contact</a>
+    <a href="cart.html" class="hover:text-emerald-400">Cart</a>
+    <a href="account.html" class="hover:text-emerald-400">Account</a>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/animations.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  lucide.createIcons();
+  const params = new URLSearchParams(window.location.search);
+  const productId = params.get('id') || 'prod-1';
+  renderProductDetail(productId);
+});
+
+let currentQty = 1;
+
+function renderProductDetail(id) {
+  const p = window.freshCartAPI.getProductById(id) || window.freshCartAPI.getProducts()[0];
+  if (!p) return;
+
+  document.getElementById('breadcrumb-product-name').textContent = p.name;
+  document.title = `${p.name} — FreshCart`;
+  const inWishlist = window.freshCartAPI.getWishlist().includes(p.id);
+  const outOfStock = p.stock <= 0;
+
+  const view = document.getElementById('product-detail-view');
+  view.innerHTML = `
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+      <!-- Images -->
+      <div class="space-y-4">
+        <div class="relative bg-slate-50 rounded-2xl overflow-hidden border border-slate-200/80 flex items-center justify-center p-4">
+          <img src="${p.image}" alt="${p.name}" class="w-full h-80 md:h-[420px] object-cover rounded-xl shadow-xs">
+          ${p.badge ? `<span class="absolute top-4 left-4 px-3 py-1 bg-emerald-600 text-white text-xs font-bold rounded-lg uppercase tracking-wider">${p.badge}</span>` : ''}
+        </div>
+      </div>
+      <!-- Info -->
+      <div class="flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between text-xs text-slate-500 mb-2">
+            <span class="font-bold text-emerald-700 uppercase tracking-wider">${p.category.replace(/-/g, ' ')} • SKU: ${p.sku}</span>
+            <span class="px-2.5 py-1 ${p.stock > 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'} font-bold rounded-md text-xs">
+              ${p.stock > 0 ? `In Stock (${p.stock} left)` : 'Out of Stock'}
+            </span>
+          </div>
+          <h1 class="text-2xl md:text-3xl font-black text-slate-900 mt-1">${p.name}</h1>
+          <p class="text-sm text-slate-500 mt-1">Brand: <strong class="text-slate-800">${p.brand}</strong> • Unit: <strong class="text-slate-800">${p.unit}</strong></p>
+
+          <div class="flex items-center gap-3 mt-4 pb-4 border-b border-slate-100">
+            <div class="flex items-center gap-1 bg-amber-50 px-3 py-1 rounded-lg border border-amber-200 text-amber-700 font-extrabold text-sm">
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400 text-amber-400"></i><span>${p.rating}</span>
+            </div>
+            <span class="text-xs text-slate-500 font-medium">${p.reviewsCount} customer ratings & reviews</span>
+          </div>
+
+          <div class="mt-5 flex items-baseline gap-3">
+            <span class="text-3xl font-black text-slate-900">₹${p.price}</span>
+            ${p.originalPrice > p.price ? `<span class="text-base text-slate-400 line-through">MRP ₹${p.originalPrice}</span><span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">Save ${p.discount}%</span>` : ''}
+          </div>
+          <p class="text-[11px] text-slate-400 mt-0.5">Inclusive of all taxes</p>
+
+          <div class="mt-6">
+            <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">Product Description</h3>
+            <p class="text-sm text-slate-600 leading-relaxed">${p.description}</p>
+          </div>
+
+          ${(p.tags || []).length > 0 ? `
+            <div class="mt-4 flex flex-wrap gap-1.5">
+              ${p.tags.map(t => `<span class="px-2.5 py-1 bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg">#${t}</span>`).join('')}
+            </div>` : ''}
+
+          <div class="mt-6 grid grid-cols-2 gap-3 text-xs">
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center gap-2.5">
+              <i data-lucide="truck" class="w-5 h-5 text-emerald-600"></i>
+              <div><strong class="block text-slate-900">Superfast Delivery</strong><span class="text-slate-500">In 30-60 mins</span></div>
+            </div>
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center gap-2.5">
+              <i data-lucide="shield-check" class="w-5 h-5 text-emerald-600"></i>
+              <div><strong class="block text-slate-900">Quality Checked</strong><span class="text-slate-500">100% Guaranteed</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center gap-3">
+          <div class="flex items-center border border-slate-200 rounded-xl bg-slate-50 overflow-hidden">
+            <button onclick="changeQty(-1, ${p.stock})" class="px-3.5 py-2.5 text-sm text-slate-600 hover:bg-slate-200 font-bold transition-colors">-</button>
+            <span id="product-qty-display" class="px-4 py-2.5 text-sm font-bold text-slate-900 bg-white min-w-[48px] text-center">1</span>
+            <button onclick="changeQty(1, ${p.stock})" class="px-3.5 py-2.5 text-sm text-slate-600 hover:bg-slate-200 font-bold transition-colors">+</button>
+          </div>
+          <button onclick="addToCart('${p.id}')" ${outOfStock ? 'disabled' : ''} class="flex-1 w-full py-3 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm flex items-center justify-center gap-2 transition-all shadow-md disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed">
+            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Add to Cart
+          </button>
+          <button onclick="buyNow('${p.id}')" ${outOfStock ? 'disabled' : ''} class="w-full sm:w-auto py-3 px-6 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-sm transition-all shadow-md disabled:opacity-40 disabled:cursor-not-allowed">
+            Buy Now
+          </button>
+          <button onclick="toggleWl('${p.id}')" class="p-3 rounded-xl border border-slate-200 hover:border-red-300 text-slate-500 hover:text-red-500 transition-colors" title="Save to Wishlist">
+            <i data-lucide="heart" class="w-5 h-5 ${inWishlist ? 'fill-red-500 text-red-500' : ''}"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  renderRelatedProducts(p.category, p.id);
+  lucide.createIcons();
+}
+
+function changeQty(delta, maxStock) {
+  currentQty = Math.max(1, Math.min(maxStock, currentQty + delta));
+  const el = document.getElementById('product-qty-display');
+  if (el) el.textContent = currentQty;
+}
+
+function addToCart(id) {
+  window.cartManager.addItem(id, currentQty);
+}
+
+function buyNow(id) {
+  window.cartManager.addItem(id, currentQty);
+  window.location.href = 'checkout.html';
+}
+
+function toggleWl(id) {
+  const r = window.freshCartAPI.toggleWishlist(id);
+  showToast(r.isAdded ? 'Added to Wishlist!' : 'Removed from Wishlist', r.isAdded ? 'success' : 'info');
+  renderProductDetail(id);
+}
+
+function renderRelatedProducts(cat, currentId) {
+  const grid = document.getElementById('related-products-grid');
+  if (!grid) return;
+  const list = window.freshCartAPI.getProducts().filter(p => p.category === cat && p.id !== currentId).slice(0, 4);
+  grid.innerHTML = list.map(p => `
+    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden product-card-hover p-3 flex flex-col justify-between">
+      <a href="product.html?id=${p.id}" class="block">
+        <img src="${p.image}" alt="${p.name}" class="w-full h-36 object-cover rounded-xl mb-2">
+        <h4 class="text-xs font-bold text-slate-900 line-clamp-1">${p.name}</h4>
+        <p class="text-[11px] text-slate-500">${p.unit}</p>
+      </a>
+      <div class="flex items-center justify-between mt-3 pt-2 border-t border-slate-100">
+        <span class="text-xs font-extrabold text-slate-900">₹${p.price}</span>
+        <button onclick="window.cartManager.addItem('${p.id}', 1)" class="px-2.5 py-1 bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white rounded-lg text-xs font-bold transition-colors">
+          + Add
+        </button>
+      </div>
+    </div>
+  `).join('');
+  lucide.createIcons();
+}
+</script>
+</body>
+</html>

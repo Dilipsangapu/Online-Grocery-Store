@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us — FreshCart</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            emerald: { 50:'#ecfdf5',100:'#d1fae5',200:'#a7f3d0',300:'#6ee7b7',400:'#34d399',500:'#10b981',600:'#059669',700:'#047857',800:'#065f46',900:'#064e3b' },
+            green: { 50:'#f0fdf4',100:'#dcfce7',600:'#16a34a',700:'#15803d',800:'#166534',900:'#14532d' }
+          },
+          fontFamily: { sans: ['Plus Jakarta Sans','Inter','system-ui','sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+<body class="bg-slate-50 font-sans">
+<div id="toast-container"></div>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="bg-emerald-800 text-white py-2 px-4 text-center text-xs font-semibold overflow-hidden">
+  <span class="inline-flex items-center gap-6">
+    <span class="flex items-center gap-1.5"><i data-lucide="truck" class="w-3.5 h-3.5"></i> Free delivery on orders above ₹499</span>
+    <span class="hidden sm:flex items-center gap-1.5"><i data-lucide="clock" class="w-3.5 h-3.5"></i> Same-day delivery available</span>
+    <span class="hidden md:flex items-center gap-1.5"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> 100% Quality Checked</span>
+  </span>
+</div>
+
+<!-- NAVBAR -->
+<nav class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="flex items-center h-20 gap-4">
+      <a href="index.html" class="flex-shrink-0 flex items-center gap-3 group">
+        <img src="assets/images/logo.png" alt="FreshCart Logo" class="h-12 sm:h-14 w-auto object-contain group-hover:scale-105 transition-transform duration-200">
+        <div class="flex flex-col leading-none">
+          <span class="text-xl sm:text-2xl font-black text-emerald-700 tracking-tight">Fresh<span class="text-slate-900">Cart</span></span>
+          <span class="text-[11px] text-slate-500 font-semibold tracking-tight mt-0.5">Fresh groceries, delivered.</span>
+        </div>
+      </a>
+      <div class="flex-1 max-w-2xl hidden md:block">
+        <div class="relative">
+          <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+          <input type="text" placeholder="Search fruits, vegetables, milk, snacks…" class="w-full pl-10 pr-4 py-2.5 text-sm border border-slate-200 rounded-xl bg-slate-50 focus:outline-none focus:border-emerald-400" onclick="window.location.href='shop.html'" readonly>
+        </div>
+      </div>
+      <div class="ml-auto flex items-center gap-1.5">
+        <a href="account.html" class="hidden sm:flex items-center gap-1.5 px-3 py-2 text-xs text-slate-600 hover:text-emerald-700 font-semibold rounded-xl hover:bg-slate-50 transition-colors">
+          <i data-lucide="user" class="w-4 h-4"></i><span class="hidden lg:block">Account</span>
+        </a>
+        <a href="shop.html" class="hidden sm:flex items-center gap-1.5 px-3 py-2 text-xs text-slate-600 hover:text-emerald-700 font-semibold rounded-xl hover:bg-slate-50 transition-colors relative">
+          <i data-lucide="heart" class="w-4 h-4"></i>
+          <span class="wishlist-count-badge absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center hidden">0</span>
+        </a>
+        <a href="cart.html" class="flex items-center gap-2 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-colors relative">
+          <i data-lucide="shopping-basket" class="w-4 h-4"></i>
+          <span class="hidden sm:block">Cart</span>
+          <span class="cart-count-badge ml-1 bg-white text-emerald-700 w-5 h-5 rounded-full flex items-center justify-center font-extrabold text-[10px] hidden">0</span>
+        </a>
+        <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- Desktop Nav Links -->
+  <div class="hidden md:block border-t border-slate-100 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center gap-1 py-1.5">
+      <a href="index.html" class="px-4 py-1.5 text-xs font-semibold text-slate-600 hover:text-emerald-700 rounded-lg hover:bg-emerald-50 transition-colors">Home</a>
+      <a href="shop.html" class="px-4 py-1.5 text-xs font-semibold text-slate-600 hover:text-emerald-700 rounded-lg hover:bg-emerald-50 transition-colors">Shop</a>
+      <a href="shop.html#categories" class="px-4 py-1.5 text-xs font-semibold text-slate-600 hover:text-emerald-700 rounded-lg hover:bg-emerald-50 transition-colors">Categories</a>
+      <a href="shop.html?deals=1" class="px-4 py-1.5 text-xs font-bold text-orange-600 hover:text-orange-700 rounded-lg hover:bg-orange-50 transition-colors flex items-center gap-1"><i data-lucide="zap" class="w-3 h-3 fill-orange-500 text-orange-500"></i>Deals</a>
+      <a href="about.html" class="px-4 py-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 rounded-lg">About</a>
+      <a href="contact.html" class="px-4 py-1.5 text-xs font-semibold text-slate-600 hover:text-emerald-700 rounded-lg hover:bg-emerald-50 transition-colors">Contact</a>
+      <div class="ml-auto flex items-center gap-3">
+        <a href="admin/login.html" class="text-[10px] text-slate-400 hover:text-slate-600 font-medium">Admin Panel</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div id="mobile-menu" class="hidden fixed inset-0 z-[60] bg-white flex-col">
+  <div class="flex items-center justify-between px-4 py-4 border-b border-slate-100">
+    <span class="text-lg font-black text-emerald-700">FreshCart</span>
+    <button id="mobile-menu-close" class="p-2 rounded-xl text-slate-600 hover:bg-slate-100"><i data-lucide="x" class="w-5 h-5"></i></button>
+  </div>
+  <div class="flex flex-col p-4 gap-1">
+    <a href="index.html" class="py-3 px-4 font-semibold text-slate-700 hover:bg-slate-50 rounded-xl text-sm">Home</a>
+    <a href="shop.html" class="py-3 px-4 font-semibold text-slate-700 hover:bg-slate-50 rounded-xl text-sm">Shop All Products</a>
+    <a href="shop.html?deals=1" class="py-3 px-4 font-bold text-orange-600 hover:bg-orange-50 rounded-xl text-sm flex items-center gap-2"><i data-lucide="zap" class="w-4 h-4"></i>Today's Deals</a>
+    <a href="about.html" class="py-3 px-4 font-bold text-emerald-700 bg-emerald-50 rounded-xl text-sm">About FreshCart</a>
+    <a href="contact.html" class="py-3 px-4 font-semibold text-slate-700 hover:bg-slate-50 rounded-xl text-sm">Contact Support</a>
+    <a href="cart.html" class="py-3 px-4 font-semibold text-slate-700 hover:bg-slate-50 rounded-xl text-sm">My Cart</a>
+    <a href="account.html" class="py-3 px-4 font-semibold text-slate-700 hover:bg-slate-50 rounded-xl text-sm">My Account</a>
+    <a href="track-order.html" class="py-3 px-4 font-semibold text-slate-700 hover:bg-slate-50 rounded-xl text-sm">Track Order</a>
+    <div class="border-t border-slate-100 pt-3 mt-2">
+      <a href="admin/login.html" class="py-2.5 px-4 font-semibold text-slate-500 hover:bg-slate-50 rounded-xl text-xs">Admin Panel →</a>
+    </div>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+  <nav class="flex items-center gap-2 text-xs text-slate-400">
+    <a href="index.html" class="hover:text-emerald-600 font-medium">Home</a>
+    <i data-lucide="chevron-right" class="w-3 h-3"></i>
+    <span class="text-slate-700 font-semibold">About Us</span>
+  </nav>
+</div>
+
+<!-- HERO HEADER -->
+<section class="py-12 md:py-16 bg-gradient-to-br from-emerald-50 via-white to-green-50 border-b border-slate-200/60">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-100 text-emerald-800 text-xs font-extrabold rounded-full mb-4">
+      <i data-lucide="leaf" class="w-3.5 h-3.5 text-emerald-600"></i> OUR MISSION & STORY
+    </div>
+    <h1 class="text-3xl sm:text-5xl font-black text-slate-900 leading-tight max-w-3xl mx-auto">
+      Fresh Groceries, Picked with Love & Delivered with Trust.
+    </h1>
+    <p class="text-base text-slate-600 max-w-2xl mx-auto mt-4 leading-relaxed">
+      FreshCart was created to reimagine grocery shopping in India — connecting certified organic farms and regional producers directly to your dining table in under 60 minutes.
+    </p>
+  </div>
+</section>
+
+<!-- STORY SECTION -->
+<section class="py-16 max-w-7xl mx-auto px-4 sm:px-6">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <div class="relative">
+      <div class="rounded-3xl overflow-hidden shadow-2xl border border-slate-200 bg-white">
+        <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80" alt="Fresh Produce Sorting" class="w-full h-96 object-cover">
+      </div>
+      <div class="absolute -bottom-6 -right-4 bg-white p-4 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3">
+        <div class="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-700">
+          <i data-lucide="award" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <div class="text-sm font-black text-slate-900">100% Certified</div>
+          <div class="text-xs text-slate-500">Quality Checked Daily</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <span class="text-xs font-bold text-emerald-700 uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-md">How It All Began</span>
+      <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mt-3">From Local Farm Orchards Straight to Your Doorstep</h2>
+      <p class="text-sm text-slate-600 mt-4 leading-relaxed">
+        Traditional grocery supply chains involve 4–5 intermediaries, causing produce to sit on trucks for days before reaching customers. We bypassed the middlemen by setting up direct farm-gate collection hubs in Andhra Pradesh, Karnataka, and Maharashtra.
+      </p>
+      <p class="text-sm text-slate-600 mt-3 leading-relaxed">
+        Our temperature-monitored micro-fulfillment dark stores ensure that your leafy greens, stone fruits, dairy pouches, and cold-pressed staples reach you at peak freshness with zero nutrient degradation.
+      </p>
+      <div class="grid grid-cols-2 gap-4 mt-8">
+        <div class="p-4 bg-white rounded-2xl border border-slate-200 shadow-xs">
+          <div class="text-2xl font-black text-emerald-700">500+</div>
+          <div class="text-xs text-slate-500 font-semibold mt-1">Local Farmers Supported</div>
+        </div>
+        <div class="p-4 bg-white rounded-2xl border border-slate-200 shadow-xs">
+          <div class="text-2xl font-black text-emerald-700">30 Mins</div>
+          <div class="text-xs text-slate-500 font-semibold mt-1">Average Delivery Time</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CORE PILLARS -->
+<section class="py-16 bg-white border-y border-slate-200/60">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <span class="text-xs font-bold text-emerald-700 uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-md">Why Choose FreshCart</span>
+      <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mt-3">The FreshCart Quality Promise</h2>
+      <p class="text-sm text-slate-500 mt-2">Every order backed by four non-negotiable standards of excellence.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200/80 hover:border-emerald-300 transition-colors">
+        <div class="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-700 mb-4">
+          <i data-lucide="shield-check" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-base font-extrabold text-slate-900 mb-2">Multi-Point Quality Check</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">Every fruit and vegetable undergoes strict inspection for blemish, firmness, and natural ripeness.</p>
+      </div>
+      <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200/80 hover:border-emerald-300 transition-colors">
+        <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center text-blue-700 mb-4">
+          <i data-lucide="zap" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-base font-extrabold text-slate-900 mb-2">30–60 Min Express Delivery</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">Hyper-local fulfillment centers positioned close to your home guarantee speed without compromising freshness.</p>
+      </div>
+      <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200/80 hover:border-emerald-300 transition-colors">
+        <div class="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center text-amber-700 mb-4">
+          <i data-lucide="tag" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-base font-extrabold text-slate-900 mb-2">Transparent Wholesale Prices</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">Direct farm sourcing eliminates middleman markups, giving you premium organic produce at true everyday value.</p>
+      </div>
+      <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200/80 hover:border-emerald-300 transition-colors">
+        <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center text-green-700 mb-4">
+          <i data-lucide="recycle" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-base font-extrabold text-slate-900 mb-2">Eco-Conscious Packaging</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">We use 100% biodegradable cornstarch bags and recyclable corrugated kraft cartons for all deliveries.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="py-16 max-w-7xl mx-auto px-4 sm:px-6">
+  <div class="text-center max-w-2xl mx-auto mb-12">
+    <span class="text-xs font-bold text-emerald-700 uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-md">Our Workflow</span>
+    <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mt-3">From Sunrise Harvest to Your Door</h2>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+    <div class="flex flex-col items-center">
+      <div class="w-16 h-16 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-xl font-black shadow-md mb-4">1</div>
+      <h3 class="text-base font-extrabold text-slate-900 mb-2">Harvested at 4:00 AM</h3>
+      <p class="text-xs text-slate-600 leading-relaxed max-w-xs">Partner farmers hand-pick produce at dawn when water content and nutrient density are at their peak.</p>
+    </div>
+    <div class="flex flex-col items-center">
+      <div class="w-16 h-16 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-xl font-black shadow-md mb-4">2</div>
+      <h3 class="text-base font-extrabold text-slate-900 mb-2">Hydro-Cleaned & Packed</h3>
+      <p class="text-xs text-slate-600 leading-relaxed max-w-xs">Cleaned with ozonated water, graded, and packed in breathable, hygienic packaging.</p>
+    </div>
+    <div class="flex flex-col items-center">
+      <div class="w-16 h-16 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-xl font-black shadow-md mb-4">3</div>
+      <h3 class="text-base font-extrabold text-slate-900 mb-2">Dispatched to You</h3>
+      <p class="text-xs text-slate-600 leading-relaxed max-w-xs">Our riders deliver to your kitchen in insulated delivery bags within 30–60 minutes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="py-12 px-4 sm:px-6">
+  <div class="max-w-7xl mx-auto bg-gradient-to-r from-emerald-800 to-emerald-600 rounded-3xl p-8 md:p-12 text-white text-center flex flex-col items-center justify-center shadow-xl">
+    <h2 class="text-2xl sm:text-4xl font-black">Experience Pure Farm Freshness Today</h2>
+    <p class="text-emerald-100 text-sm max-w-xl mt-2 mb-6">Join over 8,000+ happy households who enjoy fresh organic groceries delivered daily.</p>
+    <div class="flex flex-wrap gap-3">
+      <a href="shop.html" class="px-7 py-3.5 bg-white text-emerald-900 hover:bg-emerald-50 rounded-xl font-extrabold text-sm shadow-md transition-all flex items-center gap-2">
+        <i data-lucide="shopping-basket" class="w-4 h-4 text-emerald-700"></i> Start Shopping
+      </a>
+      <a href="contact.html" class="px-7 py-3.5 bg-emerald-700/80 hover:bg-emerald-700 border border-white/20 text-white rounded-xl font-bold text-sm transition-all flex items-center gap-2">
+        <i data-lucide="phone" class="w-4 h-4"></i> Contact Support
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-slate-900 text-slate-400 pt-14 pb-8 px-4 sm:px-6">
+  <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 pb-10 border-b border-slate-800">
+    <div class="col-span-2 lg:col-span-2">
+      <a href="index.html" class="inline-flex items-center gap-3 mb-4 group">
+        <img src="assets/images/logo.png" alt="FreshCart" class="h-12 w-auto object-contain bg-white/10 p-1.5 rounded-2xl group-hover:bg-white/20 transition-colors">
+        <div class="leading-none">
+          <span class="text-2xl font-black text-white tracking-tight">Fresh<span class="text-emerald-400">Cart</span></span>
+          <span class="block text-xs text-slate-400 font-medium mt-1">Fresh groceries, delivered.</span>
+        </div>
+      </a>
+      <p class="text-xs leading-relaxed mb-4">Premium grocery delivery. Farm-fresh produce, trusted brands, delivered in 30 minutes.</p>
+      <div class="flex gap-3">
+        <a href="#" class="w-8 h-8 bg-slate-800 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors"><i data-lucide="instagram" class="w-4 h-4 text-white"></i></a>
+        <a href="#" class="w-8 h-8 bg-slate-800 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors"><i data-lucide="facebook" class="w-4 h-4 text-white"></i></a>
+        <a href="#" class="w-8 h-8 bg-slate-800 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors"><i data-lucide="twitter" class="w-4 h-4 text-white"></i></a>
+      </div>
+    </div>
+    <div>
+      <h4 class="text-white font-bold text-sm mb-3">Shop</h4>
+      <ul class="space-y-2 text-xs">
+        <li><a href="shop.html?category=fruits" class="hover:text-emerald-400 transition-colors">Fruits</a></li>
+        <li><a href="shop.html?category=vegetables" class="hover:text-emerald-400 transition-colors">Vegetables</a></li>
+        <li><a href="shop.html?category=dairy" class="hover:text-emerald-400 transition-colors">Dairy & Eggs</a></li>
+        <li><a href="shop.html?category=snacks" class="hover:text-emerald-400 transition-colors">Snacks</a></li>
+        <li><a href="shop.html?category=beverages" class="hover:text-emerald-400 transition-colors">Beverages</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="text-white font-bold text-sm mb-3">Company</h4>
+      <ul class="space-y-2 text-xs">
+        <li><a href="about.html" class="text-emerald-400 font-semibold">About Us</a></li>
+        <li><a href="contact.html" class="hover:text-emerald-400 transition-colors">Contact Support</a></li>
+        <li><a href="track-order.html" class="hover:text-emerald-400 transition-colors">Track Order</a></li>
+        <li><a href="cart.html" class="hover:text-emerald-400 transition-colors">My Cart</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="text-white font-bold text-sm mb-3">Contact</h4>
+      <ul class="space-y-2 text-xs">
+        <li class="flex items-center gap-1.5"><i data-lucide="phone" class="w-3.5 h-3.5 text-emerald-400"></i>1800-419-3322</li>
+        <li class="flex items-center gap-1.5"><i data-lucide="mail" class="w-3.5 h-3.5 text-emerald-400"></i>support@freshcart.in</li>
+        <li class="flex items-start gap-1.5"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-emerald-400 mt-0.5"></i>Tirupati, Andhra Pradesh</li>
+      </ul>
+    </div>
+  </div>
+  <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+    <p>© 2026 FreshCart. All rights reserved.</p>
+    <div class="flex gap-4">
+      <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+      <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+    </div>
+  </div>
+</footer>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="sm:hidden fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 z-40 flex items-center justify-around py-2">
+  <a href="index.html" class="flex flex-col items-center gap-0.5 py-1 px-3 text-slate-500"><i data-lucide="home" class="w-5 h-5"></i><span class="text-[9px]">Home</span></a>
+  <a href="shop.html" class="flex flex-col items-center gap-0.5 py-1 px-3 text-slate-500"><i data-lucide="grid-3x3" class="w-5 h-5"></i><span class="text-[9px]">Shop</span></a>
+  <a href="about.html" class="flex flex-col items-center gap-0.5 py-1 px-3 text-emerald-700"><i data-lucide="info" class="w-5 h-5"></i><span class="text-[9px] font-bold">About</span></a>
+  <a href="contact.html" class="flex flex-col items-center gap-0.5 py-1 px-3 text-slate-500"><i data-lucide="phone" class="w-5 h-5"></i><span class="text-[9px]">Contact</span></a>
+  <a href="cart.html" class="flex flex-col items-center gap-0.5 py-1 px-3 text-slate-500 relative"><i data-lucide="shopping-basket" class="w-5 h-5"></i><span class="cart-count-badge absolute top-0 right-1 w-4 h-4 bg-emerald-600 text-white text-[9px] font-bold rounded-full items-center justify-center hidden">0</span><span class="text-[9px]">Cart</span></a>
+</nav>
+<div class="h-16 sm:hidden"></div>
+
+<script src="js/data.js"></script>
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  lucide.createIcons();
+  document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+    document.getElementById('mobile-menu').classList.toggle('flex');
+  });
+  document.getElementById('mobile-menu-close')?.addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.add('hidden');
+    document.getElementById('mobile-menu').classList.remove('flex');
+  });
+});
+</script>
+</body>
+</html>

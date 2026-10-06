@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Order — FreshCart</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{emerald:{50:'#ecfdf5',100:'#d1fae5',500:'#10b981',600:'#059669',700:'#047857'}},fontFamily:{sans:['Plus Jakarta Sans','Inter','sans-serif']}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+<body class="bg-slate-50 font-sans">
+<div id="toast-container"></div>
+<nav class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center h-20 gap-4">
+    <a href="index.html" class="flex items-center gap-3 group">
+      <img src="assets/images/logo.png" alt="FreshCart Logo" class="h-12 sm:h-14 w-auto object-contain group-hover:scale-105 transition-transform duration-200">
+      <div class="flex flex-col leading-none">
+        <span class="text-xl sm:text-2xl font-black text-emerald-700 tracking-tight">Fresh<span class="text-slate-900">Cart</span></span>
+        <span class="text-[11px] text-slate-500 font-semibold tracking-tight mt-0.5">Fresh groceries, delivered.</span>
+      </div>
+    </a>
+    <span class="hidden sm:inline-block text-xs font-bold text-slate-400">/</span>
+    <span class="hidden sm:inline-block text-sm font-bold text-slate-700">Track Order</span>
+    <div class="ml-auto flex gap-3">
+      <a href="shop.html" class="px-4 py-2 text-xs font-bold text-emerald-700 border border-emerald-200 rounded-xl hover:bg-emerald-50">Shop</a>
+      <a href="account.html" class="px-4 py-2 text-xs font-semibold text-slate-600 border border-slate-200 rounded-xl hover:bg-slate-50">My Orders</a>
+    </div>
+  </div>
+</nav>
+
+<div class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+  <!-- Search Box -->
+  <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 mb-8">
+    <h1 class="text-xl font-extrabold text-slate-900 mb-1">Track Your Order</h1>
+    <p class="text-sm text-slate-500 mb-5">Enter your Order ID to get live delivery status.</p>
+    <div class="flex gap-3">
+      <input id="track-order-input" type="text" placeholder="e.g. FC-8941" class="flex-1 px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-50 uppercase" value="FC-8941">
+      <button onclick="trackOrder()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition-colors flex items-center gap-2">
+        <i data-lucide="search" class="w-4 h-4"></i> Track
+      </button>
+    </div>
+  </div>
+
+  <!-- Tracking Result -->
+  <div id="tracking-result"></div>
+</div>
+
+<footer class="bg-slate-900 text-slate-400 py-6 px-4 mt-12 text-center text-xs">
+  <p class="text-white font-black mb-1">Fresh<span class="text-emerald-400">Cart</span></p>
+  <p class="mb-2">© 2026 FreshCart. All rights reserved.</p>
+  <div class="flex justify-center gap-4 text-slate-400">
+    <a href="index.html" class="hover:text-emerald-400">Home</a>
+    <a href="shop.html" class="hover:text-emerald-400">Shop</a>
+    <a href="about.html" class="hover:text-emerald-400">About</a>
+    <a href="contact.html" class="hover:text-emerald-400">Contact</a>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/animations.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  lucide.createIcons();
+  const orderId = sessionStorage.getItem('lastOrderId') || 'FC-8941';
+  document.getElementById('track-order-input').value = orderId;
+  trackOrder();
+});
+
+function trackOrder() {
+  const id = document.getElementById('track-order-input').value.trim().toUpperCase();
+  const order = window.freshCartAPI.getOrder(id);
+  const el = document.getElementById('tracking-result');
+
+  if (!order) {
+    el.innerHTML = `<div class="text-center py-16">
+      <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4"><i data-lucide="alert-circle" class="w-8 h-8 text-red-400"></i></div>
+      <h3 class="font-extrabold text-slate-700">Order Not Found</h3>
+      <p class="text-sm text-slate-500 mt-1">Please check your Order ID and try again.</p>
+    </div>`;
+    lucide.createIcons(); return;
+  }
+
+  const steps = ['Order Placed','Confirmed','Preparing','Out for Delivery','Delivered'];
+  const currentStep = steps.findIndex(s => s === order.orderStatus);
+  const activeIdx = currentStep < 0 ? 1 : currentStep;
+  const icons = ['receipt','check-circle','package','truck','home'];
+
+  el.innerHTML = `
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-md overflow-hidden">
+      <!-- Header -->
+      <div class="bg-gradient-to-r from-emerald-700 to-emerald-600 p-6 text-white">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-emerald-100 text-xs font-medium">Order ID</p>
+            <h2 class="text-xl font-extrabold">#${order.id}</h2>
+          </div>
+          <span class="px-3 py-1.5 bg-white/20 border border-white/30 rounded-xl text-xs font-bold">${order.orderStatus}</span>
+        </div>
+        <p class="text-emerald-200 text-xs mt-2">${order.customer.name} • ${order.deliverySlot}</p>
+      </div>
+      <!-- Progress tracker -->
+      <div class="p-6">
+        <div class="relative">
+          <div class="absolute top-5 left-5 right-5 h-1 bg-slate-200 rounded-full overflow-hidden">
+            <div id="tracking-progress-bar" class="h-full bg-emerald-500 rounded-full transition-all" style="width:${Math.round(activeIdx/4*100)}%"></div>
+          </div>
+          <div class="relative flex justify-between">
+            ${steps.map((step, i) => {
+              const done = i <= activeIdx;
+              return `<div class="flex flex-col items-center gap-2 text-center relative tracking-step-node">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center z-10 ${done?'bg-emerald-600 text-white border-2 border-emerald-700':'bg-white border-2 border-slate-200 text-slate-400'} ${i===activeIdx&&activeIdx<4?'timeline-active-node relative':''} transition-colors">
+                  <i data-lucide="${icons[i]}" class="w-4 h-4"></i>
+                </div>
+                <div class="text-[10px] font-${done?'bold':'semibold'} ${done?'text-emerald-700':'text-slate-400'} whitespace-nowrap">${step}</div>
+                <div class="text-[10px] ${order.timeline[i]?.done?'text-emerald-500':'text-slate-400'} font-medium">${order.timeline[i]?.time||''}</div>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>
+      </div>
+      <!-- Order items + delivery info -->
+      <div class="px-6 pb-6 grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-100 pt-4">
+        <div>
+          <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-3">Items</h4>
+          <div class="space-y-2">
+            ${order.items.map(i=>`<div class="flex items-center gap-2">
+              <img src="${i.image}" class="w-8 h-8 rounded-lg object-cover">
+              <div class="text-xs"><span class="font-semibold">${i.name}</span><span class="text-slate-400"> × ${i.quantity}</span></div>
+              <span class="ml-auto text-xs font-bold">₹${i.price*i.quantity}</span>
+            </div>`).join('')}
+          </div>
+        </div>
+        <div class="space-y-2 text-xs">
+          <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-3">Delivery Info</h4>
+          <div class="flex items-start gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0"></i><div>${order.customer.address}, ${order.customer.city}, ${order.customer.pincode}</div></div>
+          <div class="flex items-center gap-2"><i data-lucide="user" class="w-4 h-4 text-emerald-600"></i><span>${order.deliveryPartner||'Assigned'}</span></div>
+          <div class="flex items-center gap-2"><i data-lucide="credit-card" class="w-4 h-4 text-emerald-600"></i><span>${order.paymentMethod} — <strong class="${order.paymentStatus==='Paid'?'text-emerald-600':'text-amber-600'}">${order.paymentStatus}</strong></span></div>
+          <div class="flex items-center gap-2"><i data-lucide="indian-rupee" class="w-4 h-4 text-emerald-600"></i><strong class="text-slate-900">₹${order.total}</strong></div>
+        </div>
+      </div>
+    </div>`;
+  lucide.createIcons();
+  if (window.gsap) window.freshCartAnimations?.animateOrderTracker(activeIdx);
+}
+</script>
+</body>
+</html>

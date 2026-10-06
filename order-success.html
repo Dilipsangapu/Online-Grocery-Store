@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Placed — FreshCart</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{emerald:{50:'#ecfdf5',100:'#d1fae5',500:'#10b981',600:'#059669',700:'#047857'}},fontFamily:{sans:['Plus Jakarta Sans','Inter','sans-serif']}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+<body class="bg-gradient-to-br from-emerald-50 via-white to-green-50 min-h-screen font-sans">
+<div id="toast-container"></div>
+<nav class="bg-white border-b border-slate-200 shadow-sm">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center h-20">
+    <a href="index.html" class="flex items-center gap-3 group">
+      <img src="assets/images/logo.png" alt="FreshCart Logo" class="h-12 sm:h-14 w-auto object-contain group-hover:scale-105 transition-transform duration-200">
+      <div class="flex flex-col leading-none">
+        <span class="text-xl sm:text-2xl font-black text-emerald-700 tracking-tight">Fresh<span class="text-slate-900">Cart</span></span>
+        <span class="text-[11px] text-slate-500 font-semibold tracking-tight mt-0.5">Fresh groceries, delivered.</span>
+      </div>
+    </a>
+  </div>
+</nav>
+
+<div class="max-w-2xl mx-auto px-4 py-16 text-center">
+  <!-- Success animation -->
+  <div id="success-icon" class="w-24 h-24 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 border-4 border-emerald-200">
+    <i data-lucide="check-circle-2" class="w-14 h-14 text-emerald-600"></i>
+  </div>
+  <h1 id="success-title" class="text-3xl font-black text-slate-900">Order Placed Successfully!</h1>
+  <p class="text-slate-500 mt-2 text-sm">Thank you for shopping with FreshCart! Your fresh groceries are on the way.</p>
+
+  <!-- Order Details Card -->
+  <div id="order-details-card" class="mt-8 bg-white rounded-3xl border border-slate-200 shadow-md p-6 text-left space-y-4">
+    <h3 class="text-sm font-extrabold text-slate-900 pb-3 border-b border-slate-100 flex items-center gap-2">
+      <i data-lucide="package" class="w-4 h-4 text-emerald-600"></i> Order Details
+    </h3>
+    <div id="order-info"></div>
+  </div>
+
+  <!-- Order Tracking steps -->
+  <div class="mt-8 bg-white rounded-3xl border border-slate-200 shadow-md p-6">
+    <h3 class="text-sm font-extrabold text-slate-900 mb-6 flex items-center gap-2">
+      <i data-lucide="map-pin" class="w-4 h-4 text-emerald-600"></i> Order Status
+    </h3>
+    <div class="flex items-center justify-between">
+      <div class="flex flex-col items-center gap-1 text-center" id="step-0">
+        <div class="w-10 h-10 rounded-full bg-emerald-600 flex items-center justify-center tracking-step-node"><i data-lucide="check" class="w-5 h-5 text-white"></i></div>
+        <span class="text-[10px] font-bold text-emerald-700">Placed</span>
+      </div>
+      <div class="flex-1 h-1 bg-emerald-200 mx-1 rounded-full"></div>
+      <div class="flex flex-col items-center gap-1 text-center tracking-step-node">
+        <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center"><i data-lucide="check" class="w-5 h-5 text-white"></i></div>
+        <span class="text-[10px] font-bold text-emerald-700">Confirmed</span>
+      </div>
+      <div class="flex-1 h-1 bg-slate-200 mx-1 rounded-full"></div>
+      <div class="flex flex-col items-center gap-1 text-center tracking-step-node">
+        <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center"><i data-lucide="package" class="w-5 h-5 text-slate-400"></i></div>
+        <span class="text-[10px] font-semibold text-slate-400">Preparing</span>
+      </div>
+      <div class="flex-1 h-1 bg-slate-200 mx-1 rounded-full"></div>
+      <div class="flex flex-col items-center gap-1 text-center tracking-step-node">
+        <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center"><i data-lucide="truck" class="w-5 h-5 text-slate-400"></i></div>
+        <span class="text-[10px] font-semibold text-slate-400">Out for Delivery</span>
+      </div>
+      <div class="flex-1 h-1 bg-slate-200 mx-1 rounded-full"></div>
+      <div class="flex flex-col items-center gap-1 text-center tracking-step-node">
+        <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center"><i data-lucide="home" class="w-5 h-5 text-slate-400"></i></div>
+        <span class="text-[10px] font-semibold text-slate-400">Delivered</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTAs -->
+  <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+    <a href="track-order.html" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition-all shadow-md">
+      <i data-lucide="map-pin" class="w-4 h-4"></i> Track My Order
+    </a>
+    <a href="shop.html" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white border border-slate-200 text-slate-900 font-bold rounded-xl text-sm hover:bg-slate-50 transition-all">
+      <i data-lucide="shopping-basket" class="w-4 h-4"></i> Continue Shopping
+    </a>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  lucide.createIcons();
+
+  const orderId = sessionStorage.getItem('lastOrderId');
+  const order = orderId ? window.freshCartAPI.getOrder(orderId) : null;
+
+  const infoEl = document.getElementById('order-info');
+  if (order && infoEl) {
+    infoEl.innerHTML = `
+      <div class="grid grid-cols-2 gap-3 text-xs">
+        <div class="bg-slate-50 p-3 rounded-xl">
+          <div class="text-slate-500 mb-0.5">Order ID</div>
+          <div class="font-extrabold text-slate-900">#${order.id}</div>
+        </div>
+        <div class="bg-slate-50 p-3 rounded-xl">
+          <div class="text-slate-500 mb-0.5">Amount Paid</div>
+          <div class="font-extrabold text-emerald-700">₹${order.total}</div>
+        </div>
+        <div class="bg-slate-50 p-3 rounded-xl">
+          <div class="text-slate-500 mb-0.5">Payment</div>
+          <div class="font-bold">${order.paymentMethod}</div>
+        </div>
+        <div class="bg-slate-50 p-3 rounded-xl">
+          <div class="text-slate-500 mb-0.5">Delivery Slot</div>
+          <div class="font-bold">${order.deliverySlot}</div>
+        </div>
+        <div class="col-span-2 bg-slate-50 p-3 rounded-xl">
+          <div class="text-slate-500 mb-0.5">Delivery Address</div>
+          <div class="font-bold">${order.customer.address}, ${order.customer.city} - ${order.customer.pincode}</div>
+        </div>
+      </div>`;
+  } else if (infoEl) {
+    infoEl.innerHTML = '<p class="text-xs text-slate-500">Order details not available. <a href="account.html" class="text-emerald-600 font-semibold">View My Orders</a></p>';
+  }
+
+  // GSAP entrance
+  if (window.gsap) {
+    gsap.from('#success-icon', { scale: 0, opacity: 0, duration: .7, ease: 'back.out(2)', delay: .1 });
+    gsap.from('#success-title', { y: 20, opacity: 0, duration: .6, delay: .4, ease: 'power2.out' });
+    gsap.from('#order-details-card', { y: 25, opacity: 0, duration: .6, delay: .6, ease: 'power2.out' });
+  }
+});
+</script>
+</body>
+</html>

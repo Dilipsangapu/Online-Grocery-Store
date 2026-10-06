@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop — FreshCart</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { emerald: { 50:'#ecfdf5',100:'#d1fae5',200:'#a7f3d0',300:'#6ee7b7',400:'#34d399',500:'#10b981',600:'#059669',700:'#047857',800:'#065f46',900:'#064e3b' } }, fontFamily: { sans: ['Plus Jakarta Sans','Inter','system-ui','sans-serif'] } } }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+<body class="bg-slate-50 font-sans">
+<div id="toast-container"></div>
+
+<!-- NAVBAR (shared) -->
+<div class="bg-emerald-800 text-white py-2 px-4 text-center text-xs font-semibold">
+  <span class="flex items-center justify-center gap-6"><i data-lucide="truck" class="w-3.5 h-3.5"></i> Free delivery on orders above ₹499 &nbsp;|&nbsp; Same-day delivery available</span>
+</div>
+<nav class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center h-20 gap-4">
+    <a href="index.html" class="flex-shrink-0 flex items-center gap-3 group">
+      <img src="assets/images/logo.png" alt="FreshCart Logo" class="h-12 sm:h-14 w-auto object-contain group-hover:scale-105 transition-transform duration-200">
+      <div class="flex flex-col leading-none">
+        <span class="text-xl sm:text-2xl font-black text-emerald-700 tracking-tight">Fresh<span class="text-slate-900">Cart</span></span>
+        <span class="text-[11px] text-slate-500 font-semibold tracking-tight mt-0.5">Fresh groceries, delivered.</span>
+      </div>
+    </a>
+    <div class="flex-1 max-w-2xl hidden sm:block">
+      <div class="relative">
+        <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+        <input id="product-search-input" type="text" placeholder="Search products by name, brand, tag…" class="w-full pl-10 pr-4 py-2.5 text-sm border border-slate-200 rounded-xl bg-slate-50 focus:outline-none focus:border-emerald-400 focus:bg-white transition-all">
+      </div>
+    </div>
+      <div class="ml-auto flex items-center gap-2">
+        <a href="account.html" class="p-2 text-slate-600 hover:text-emerald-700 rounded-xl hover:bg-slate-50"><i data-lucide="user" class="w-5 h-5"></i></a>
+        <a href="cart.html" class="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-colors relative">
+          <i data-lucide="shopping-basket" class="w-4 h-4"></i> Cart
+          <span class="cart-count-badge ml-1 bg-white text-emerald-700 w-5 h-5 rounded-full flex items-center justify-center font-extrabold text-[10px] hidden">0</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- Desktop Nav Links -->
+  <div class="hidden md:block border-t border-slate-100 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center gap-1 py-1.5">
+      <a href="index.html" class="px-4 py-1.5 text-xs font-semibold text-slate-600 hover:text-emerald-700 rounded-lg hover:bg-emerald-50 transition-colors">Home</a>
+      <a href="shop.html" class="px-4 py-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 rounded-lg">Shop</a>
+      <a href="index.html#categories-section" class="px-4 py-1.5 text-xs font-semibold text-slate-600 hover:text-emerald-700 rounded-lg hover:bg-emerald-50 transition-colors">Categories</a>
+      <button onclick="window.productsCtrl.setDealsOnly(true)" class="px-4 py-1.5 text-xs font-bold text-orange-600 hover:text-orange-700 rounded-lg hover:bg-orange-50 transition-colors flex items-center gap-1"><i data-lucide="zap" class="w-3 h-3 fill-orange-500 text-orange-500"></i>Deals</button>
+      <a href="about.html" class="px-4 py-1.5 text-xs font-semibold text-slate-600 hover:text-emerald-700 rounded-lg hover:bg-emerald-50 transition-colors">About</a>
+      <a href="contact.html" class="px-4 py-1.5 text-xs font-semibold text-slate-600 hover:text-emerald-700 rounded-lg hover:bg-emerald-50 transition-colors">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-3">
+  <nav class="flex items-center gap-2 text-xs text-slate-400">
+    <a href="index.html" class="hover:text-emerald-600 font-medium">Home</a>
+    <i data-lucide="chevron-right" class="w-3 h-3"></i>
+    <span class="text-slate-700 font-semibold">Shop</span>
+  </nav>
+</div>
+
+<!-- CATEGORY PILL FILTERS -->
+<div class="bg-white border-y border-slate-100 py-3 px-4 sm:px-6 sticky top-[64px] z-40 shadow-xs">
+  <div class="max-w-7xl mx-auto">
+    <div id="category-filter-pills" class="flex gap-2 overflow-x-auto no-scrollbar pb-0.5"></div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex gap-6">
+
+  <!-- FILTER SIDEBAR -->
+  <aside class="hidden lg:block w-60 flex-shrink-0 space-y-5">
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-sm font-extrabold text-slate-900 flex items-center gap-1.5"><i data-lucide="sliders-horizontal" class="w-4 h-4 text-emerald-600"></i> Filters</h3>
+        <button onclick="window.productsCtrl.clearFilters()" class="text-xs font-bold text-red-500 hover:underline">Clear All</button>
+      </div>
+      <!-- Price Range -->
+      <div class="mb-4 pb-4 border-b border-slate-100">
+        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Price</h4>
+        <div class="space-y-2">
+          <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer"><input type="radio" name="price" value="all" class="filter-price-radio accent-emerald-600" checked> All Prices</label>
+          <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer"><input type="radio" name="price" value="under-100" class="filter-price-radio accent-emerald-600"> Under ₹100</label>
+          <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer"><input type="radio" name="price" value="100-250" class="filter-price-radio accent-emerald-600"> ₹100 – ₹250</label>
+          <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer"><input type="radio" name="price" value="250-500" class="filter-price-radio accent-emerald-600"> ₹250 – ₹500</label>
+          <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer"><input type="radio" name="price" value="above-500" class="filter-price-radio accent-emerald-600"> Above ₹500</label>
+        </div>
+      </div>
+      <!-- Rating -->
+      <div class="mb-4 pb-4 border-b border-slate-100">
+        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Rating</h4>
+        <div class="space-y-2">
+          <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer"><input type="radio" name="rating" value="all" class="filter-rating-radio accent-emerald-600" checked> All Ratings</label>
+          <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer"><input type="radio" name="rating" value="4-plus" class="filter-rating-radio accent-emerald-600"><span class="flex items-center gap-1 font-semibold text-amber-600"><i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i> 4★ & above</span></label>
+          <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer"><input type="radio" name="rating" value="3-plus" class="filter-rating-radio accent-emerald-600"><span class="flex items-center gap-1 font-semibold text-amber-600"><i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i> 3★ & above</span></label>
+        </div>
+      </div>
+      <!-- Availability -->
+      <div class="mb-4 pb-4 border-b border-slate-100">
+        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Availability</h4>
+        <div class="space-y-2">
+          <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer"><input type="radio" name="availability" value="all" class="filter-availability-radio accent-emerald-600" checked> All Products</label>
+          <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer"><input type="radio" name="availability" value="in-stock" class="filter-availability-radio accent-emerald-600"> In Stock Only</label>
+        </div>
+      </div>
+      <!-- Discount -->
+      <div>
+        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Discount</h4>
+        <div class="space-y-2">
+          <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer"><input type="radio" name="discount" value="all" class="filter-discount-radio accent-emerald-600" checked> All Discounts</label>
+          <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer"><input type="radio" name="discount" value="10-plus" class="filter-discount-radio accent-emerald-600"> 10%+ OFF</label>
+          <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer"><input type="radio" name="discount" value="20-plus" class="filter-discount-radio accent-emerald-600"> 20%+ OFF</label>
+          <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer"><input type="radio" name="discount" value="30-plus" class="filter-discount-radio accent-emerald-600"> 30%+ OFF</label>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- PRODUCTS SECTION -->
+  <div class="flex-1 min-w-0" id="products-section">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+      <div>
+        <h1 id="shop-page-title" class="text-xl font-black text-slate-900">Popular Groceries</h1>
+        <p id="products-count" class="text-xs text-slate-500 mt-0.5">Loading...</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <label for="product-sort-select" class="text-xs text-slate-500 font-medium hidden sm:inline">Sort by:</label>
+        <select id="product-sort-select" class="px-3 py-2 text-xs border border-slate-200 rounded-xl bg-white font-semibold focus:outline-none focus:border-emerald-500">
+          <option value="popular">Popular</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="rating">Highest Rated</option>
+          <option value="discount">Best Discount</option>
+          <option value="newest">Newest Arrivals</option>
+        </select>
+      </div>
+    </div>
+    <!-- Deals active notification banner -->
+    <div id="deals-active-banner" class="hidden mb-4 p-3.5 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-2xl flex items-center justify-between shadow-xs">
+      <div class="flex items-center gap-2 text-xs font-bold">
+        <i data-lucide="zap" class="w-4 h-4 fill-white text-white"></i>
+        <span>Exclusive Deals Mode Active — Showing discounted items up to 30% OFF!</span>
+      </div>
+      <button onclick="window.productsCtrl.setDealsOnly(false)" class="px-3 py-1 bg-white/20 hover:bg-white/30 rounded-lg text-xs font-bold transition-colors">
+        Show All Items
+      </button>
+    </div>
+    <!-- Mobile Search -->
+    <div class="sm:hidden mb-4">
+      <div class="relative">
+        <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+        <input id="product-search-input" type="text" placeholder="Search products…" class="w-full pl-10 pr-4 py-2.5 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:border-emerald-400">
+      </div>
+    </div>
+    <!-- Products Grid -->
+    <div id="products-grid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4"></div>
+    <!-- Empty State -->
+    <div id="products-empty-state" class="hidden text-center py-20">
+      <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i data-lucide="search-x" class="w-10 h-10 text-slate-400"></i>
+      </div>
+      <h3 class="text-lg font-bold text-slate-700">No products found</h3>
+      <p class="text-sm text-slate-500 mt-1">Try searching for something else or clear filters.</p>
+      <button onclick="window.productsCtrl.clearFilters()" class="mt-4 px-5 py-2 bg-emerald-600 text-white rounded-xl text-sm font-bold">Clear Filters</button>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- FOOTER -->
+<footer class="bg-slate-900 text-slate-400 py-8 px-4 mt-12 text-center text-xs">
+  <div class="flex items-center justify-center gap-3 mb-3">
+    <img src="assets/images/logo.png" alt="FreshCart Logo" class="h-10 w-auto object-contain bg-white/10 p-1.5 rounded-xl">
+    <span class="text-xl font-black text-white">Fresh<span class="text-emerald-400">Cart</span></span>
+  </div>
+  <p>© 2026 FreshCart. All rights reserved.</p>
+  <div class="flex justify-center gap-4 mt-2">
+    <a href="index.html" class="hover:text-emerald-400">Home</a>
+    <a href="shop.html" class="hover:text-emerald-400">Shop</a>
+    <a href="about.html" class="hover:text-emerald-400">About</a>
+    <a href="contact.html" class="hover:text-emerald-400">Contact</a>
+    <a href="cart.html" class="hover:text-emerald-400">Cart</a>
+    <a href="account.html" class="hover:text-emerald-400">Account</a>
+  </div>
+</footer>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="sm:hidden fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 z-40 flex items-center justify-around py-2">
+  <a href="index.html" class="flex flex-col items-center gap-0.5 py-1 px-3 text-slate-500"><i data-lucide="home" class="w-5 h-5"></i><span class="text-[9px]">Home</span></a>
+  <a href="shop.html" class="flex flex-col items-center gap-0.5 py-1 px-3 text-emerald-700"><i data-lucide="grid-3x3" class="w-5 h-5"></i><span class="text-[9px] font-bold">Shop</span></a>
+  <a href="account.html" class="flex flex-col items-center gap-0.5 py-1 px-3 text-slate-500"><i data-lucide="user" class="w-5 h-5"></i><span class="text-[9px]">Account</span></a>
+  <a href="cart.html" class="flex flex-col items-center gap-0.5 py-1 px-3 text-slate-500 relative"><i data-lucide="shopping-basket" class="w-5 h-5"></i><span class="cart-count-badge absolute top-0 right-1 w-4 h-4 bg-emerald-600 text-white text-[9px] font-bold rounded-full items-center justify-center hidden">0</span><span class="text-[9px]">Cart</span></a>
+</nav>
+<div class="h-16 sm:hidden"></div>
+
+<script src="js/data.js"></script>
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/animations.js"></script>
+<script src="js/app.js"></script>
+<script src="js/products.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  lucide.createIcons();
+  const params = new URLSearchParams(window.location.search);
+  const cat = params.get('category');
+  if (cat && window.productsCtrl) window.productsCtrl.setCategory(cat);
+});
+</script>
+</body>
+</html>

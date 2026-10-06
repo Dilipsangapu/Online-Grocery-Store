@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — FreshCart Admin</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{emerald:{50:'#ecfdf5',100:'#d1fae5',500:'#10b981',600:'#059669',700:'#047857',800:'#065f46',900:'#064e3b'}},fontFamily:{sans:['Plus Jakarta Sans','Inter','sans-serif']}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body class="bg-slate-100 font-sans">
+<div id="toast-container"></div>
+
+<div class="flex h-screen overflow-hidden">
+  <!-- SIDEBAR -->
+  <aside class="w-64 flex-shrink-0 bg-slate-900 flex flex-col h-full overflow-y-auto">
+    <div class="p-5 border-b border-slate-800 flex items-center gap-3">
+      <img src="../assets/images/logo.png" alt="FreshCart Admin" class="h-11 w-auto max-h-11 object-contain bg-white/10 p-1.5 rounded-xl">
+      <div>
+        <div class="text-lg font-black text-white leading-none">Fresh<span class="text-emerald-400">Cart</span></div>
+        <div class="text-[10px] text-slate-400 font-medium mt-1">Admin Control Panel</div>
+      </div>
+    </div>
+    <nav class="flex-1 p-3 space-y-0.5">
+      <a href="dashboard.html" class="admin-nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold bg-emerald-700 text-white">
+        <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
+      </a>
+      <a href="products.html" class="admin-nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 transition-colors">
+        <i data-lucide="package" class="w-4 h-4"></i> Products
+      </a>
+      <a href="categories.html" class="admin-nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 transition-colors">
+        <i data-lucide="grid-3x3" class="w-4 h-4"></i> Categories
+      </a>
+      <a href="orders.html" class="admin-nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 transition-colors">
+        <i data-lucide="shopping-cart" class="w-4 h-4"></i> Orders
+      </a>
+      <a href="customers.html" class="admin-nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 transition-colors">
+        <i data-lucide="users" class="w-4 h-4"></i> Customers
+      </a>
+      <a href="inventory.html" class="admin-nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 transition-colors">
+        <i data-lucide="warehouse" class="w-4 h-4"></i> Inventory
+      </a>
+      <a href="coupons.html" class="admin-nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 transition-colors">
+        <i data-lucide="ticket" class="w-4 h-4"></i> Coupons
+      </a>
+      <a href="reviews.html" class="admin-nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 transition-colors">
+        <i data-lucide="star" class="w-4 h-4"></i> Reviews
+      </a>
+      <a href="payments.html" class="admin-nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 transition-colors">
+        <i data-lucide="credit-card" class="w-4 h-4"></i> Payments
+      </a>
+      <a href="delivery.html" class="admin-nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 transition-colors">
+        <i data-lucide="truck" class="w-4 h-4"></i> Delivery
+      </a>
+      <a href="reports.html" class="admin-nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 transition-colors">
+        <i data-lucide="bar-chart-2" class="w-4 h-4"></i> Reports
+      </a>
+      <a href="settings.html" class="admin-nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 transition-colors">
+        <i data-lucide="settings" class="w-4 h-4"></i> Settings
+      </a>
+    </nav>
+    <div class="p-3 border-t border-slate-800">
+      <button onclick="doLogout()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-red-900/40 hover:text-red-400 transition-colors">
+        <i data-lucide="log-out" class="w-4 h-4"></i> Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="flex-1 flex flex-col h-full overflow-hidden">
+    <!-- TOP BAR -->
+    <header class="bg-white border-b border-slate-200 px-6 py-3.5 flex items-center justify-between flex-shrink-0">
+      <div>
+        <h1 class="text-base font-extrabold text-slate-900">Dashboard</h1>
+        <p class="text-xs text-slate-400">Welcome back! Here's what's happening today.</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <button onclick="window.adminDash.exportCSV()" class="hidden sm:flex items-center gap-2 px-3 py-2 bg-slate-100 hover:bg-slate-200 rounded-xl text-xs font-semibold text-slate-700 transition-colors">
+          <i data-lucide="download" class="w-4 h-4"></i> Export CSV
+        </button>
+        <a href="../index.html" target="_blank" class="flex items-center gap-2 px-3 py-2 bg-emerald-50 hover:bg-emerald-100 rounded-xl text-xs font-semibold text-emerald-700 transition-colors">
+          <i data-lucide="external-link" class="w-4 h-4"></i> View Store
+        </a>
+        <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2">
+          <div class="w-7 h-7 bg-emerald-600 rounded-full flex items-center justify-center"><span class="text-white text-[10px] font-bold">AD</span></div>
+          <div class="hidden sm:block"><div class="text-xs font-bold text-slate-900">Admin</div></div>
+        </div>
+      </div>
+    </header>
+    <!-- CONTENT -->
+    <main class="flex-1 overflow-y-auto p-6 space-y-6">
+      <!-- KPI Cards -->
+      <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-8 h-8 bg-emerald-100 rounded-xl flex items-center justify-center"><i data-lucide="indian-rupee" class="w-4 h-4 text-emerald-600"></i></div>
+            <span class="text-xs text-slate-500 font-medium">Total Sales</span>
+          </div>
+          <div id="kpi-sales" class="kpi-counter text-xl font-extrabold text-slate-900" data-target="486240" data-currency="true">₹4,86,240</div>
+          <div class="text-[10px] text-emerald-600 font-semibold mt-1">+18.2% this month</div>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center"><i data-lucide="shopping-cart" class="w-4 h-4 text-blue-600"></i></div>
+            <span class="text-xs text-slate-500 font-medium">Orders</span>
+          </div>
+          <div id="kpi-orders" class="kpi-counter text-xl font-extrabold text-slate-900" data-target="1291">1,291</div>
+          <div class="text-[10px] text-blue-600 font-semibold mt-1">+12.5% this week</div>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-8 h-8 bg-purple-100 rounded-xl flex items-center justify-center"><i data-lucide="users" class="w-4 h-4 text-purple-600"></i></div>
+            <span class="text-xs text-slate-500 font-medium">Customers</span>
+          </div>
+          <div id="kpi-customers" class="kpi-counter text-xl font-extrabold text-slate-900" data-target="8430">8,430</div>
+          <div class="text-[10px] text-purple-600 font-semibold mt-1">+8.1% new</div>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-8 h-8 bg-amber-100 rounded-xl flex items-center justify-center"><i data-lucide="package" class="w-4 h-4 text-amber-600"></i></div>
+            <span class="text-xs text-slate-500 font-medium">Products</span>
+          </div>
+          <div id="kpi-products" class="kpi-counter text-xl font-extrabold text-slate-900" data-target="32">32</div>
+          <div class="text-[10px] text-amber-600 font-semibold mt-1">12 categories</div>
+        </div>
+        <div class="bg-white rounded-2xl border border-red-100 p-4 shadow-xs">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-8 h-8 bg-red-100 rounded-xl flex items-center justify-center"><i data-lucide="alert-triangle" class="w-4 h-4 text-red-500"></i></div>
+            <span class="text-xs text-slate-500 font-medium">Low Stock</span>
+          </div>
+          <div id="kpi-low-stock" class="kpi-counter text-xl font-extrabold text-red-600" data-target="18">18</div>
+          <div class="text-[10px] text-red-500 font-semibold mt-1">Need restock</div>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-8 h-8 bg-orange-100 rounded-xl flex items-center justify-center"><i data-lucide="clock" class="w-4 h-4 text-orange-500"></i></div>
+            <span class="text-xs text-slate-500 font-medium">Pending</span>
+          </div>
+          <div id="kpi-pending" class="kpi-counter text-xl font-extrabold text-orange-600" data-target="42">42</div>
+          <div class="text-[10px] text-orange-500 font-semibold mt-1">Awaiting action</div>
+        </div>
+      </div>
+      <!-- Chart + Recent Orders -->
+      <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+        <div class="xl:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-xs p-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+            <h3 class="text-sm font-extrabold text-slate-900">Sales Analytics</h3>
+            <div class="flex gap-1">
+              <button onclick="window.adminDash.initChart('7days')" class="chart-tf-btn px-3 py-1 rounded-lg text-[10px] font-bold bg-emerald-600 text-white" data-tf="7days">7 Days</button>
+              <button onclick="window.adminDash.initChart('30days')" class="chart-tf-btn px-3 py-1 rounded-lg text-[10px] font-bold bg-slate-100 text-slate-600" data-tf="30days">30 Days</button>
+              <button onclick="window.adminDash.initChart('3months')" class="chart-tf-btn px-3 py-1 rounded-lg text-[10px] font-bold bg-slate-100 text-slate-600" data-tf="3months">3 Months</button>
+              <button onclick="window.adminDash.initChart('1year')" class="chart-tf-btn px-3 py-1 rounded-lg text-[10px] font-bold bg-slate-100 text-slate-600" data-tf="1year">1 Year</button>
+            </div>
+          </div>
+          <div class="h-56"><canvas id="adminSalesChart"></canvas></div>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-5">
+          <h3 class="text-sm font-extrabold text-slate-900 mb-4">Quick Actions</h3>
+          <div class="space-y-2">
+            <a href="products.html" class="flex items-center gap-3 p-3 bg-slate-50 hover:bg-emerald-50 border border-slate-100 hover:border-emerald-200 rounded-xl text-xs font-semibold text-slate-700 hover:text-emerald-700 transition-colors">
+              <i data-lucide="plus-circle" class="w-4 h-4"></i> Add New Product
+            </a>
+            <a href="orders.html" class="flex items-center gap-3 p-3 bg-slate-50 hover:bg-blue-50 border border-slate-100 hover:border-blue-200 rounded-xl text-xs font-semibold text-slate-700 hover:text-blue-700 transition-colors">
+              <i data-lucide="clipboard-list" class="w-4 h-4"></i> Manage Orders
+            </a>
+            <a href="inventory.html" class="flex items-center gap-3 p-3 bg-red-50 hover:bg-red-100 border border-red-100 rounded-xl text-xs font-semibold text-red-700 transition-colors">
+              <i data-lucide="alert-triangle" class="w-4 h-4"></i> Fix Low Stock (18)
+            </a>
+            <a href="coupons.html" class="flex items-center gap-3 p-3 bg-slate-50 hover:bg-amber-50 border border-slate-100 hover:border-amber-200 rounded-xl text-xs font-semibold text-slate-700 hover:text-amber-700 transition-colors">
+              <i data-lucide="ticket" class="w-4 h-4"></i> Manage Coupons
+            </a>
+            <button onclick="window.adminDash.exportCSV()" class="w-full flex items-center gap-3 p-3 bg-slate-50 hover:bg-slate-100 border border-slate-100 rounded-xl text-xs font-semibold text-slate-700 transition-colors">
+              <i data-lucide="download" class="w-4 h-4"></i> Export Orders CSV
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Recent Orders Table -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-xs">
+        <div class="p-5 flex items-center justify-between border-b border-slate-100">
+          <h3 class="text-sm font-extrabold text-slate-900">Recent Orders</h3>
+          <a href="orders.html" class="text-xs font-bold text-emerald-700 hover:underline">View All</a>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-slate-50">
+              <tr class="text-left text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                <th class="py-3 px-4">Order ID</th>
+                <th class="py-3 px-4">Customer</th>
+                <th class="py-3 px-4">Time</th>
+                <th class="py-3 px-4">Items</th>
+                <th class="py-3 px-4">Amount</th>
+                <th class="py-3 px-4">Status</th>
+                <th class="py-3 px-4">Action</th>
+              </tr>
+            </thead>
+            <tbody id="admin-recent-orders-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ORDER DETAIL MODAL -->
+<div id="admin-order-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div class="absolute inset-0 modal-backdrop" onclick="document.getElementById('admin-order-modal').classList.add('hidden')"></div>
+  <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+    <button onclick="document.getElementById('admin-order-modal').classList.add('hidden')" class="absolute top-4 right-4 p-2 bg-slate-100 hover:bg-slate-200 rounded-xl"><i data-lucide="x" class="w-4 h-4"></i></button>
+    <div id="admin-order-modal-content"></div>
+  </div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/cart.js"></script>
+<script src="../js/animations.js"></script>
+<script src="../js/admin.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  lucide.createIcons();
+  if (!window.freshCartAPI.isAdminAuthenticated()) {
+    window.location.href = 'login.html'; return;
+  }
+  window.adminDash.init();
+  if (window.freshCartAnimations) window.freshCartAnimations.animateKPICounters();
+});
+function doLogout() { window.freshCartAPI.logoutAdmin(); showToast('Logged out.','info'); setTimeout(()=>window.location.href='login.html',600); }
+</script>
+</body>
+</html>
