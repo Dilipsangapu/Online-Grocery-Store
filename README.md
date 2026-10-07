@@ -154,11 +154,5 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ---
 
-## 👤 Author
-
-**Dilip Sangapu**  
-GitHub: [@Dilipsangapu](https://github.com/Dilipsangapu)
-
----
 
 <p align="center">Made with ❤️ for fresh groceries and clean code.</p>
